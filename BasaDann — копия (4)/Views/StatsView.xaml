@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="BasaDann.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d"  xml:lang="ru-RU"
+             d:DesignHeight="450" d:DesignWidth="600"
+             >
+
+    <UserControl.Resources>
+        <Image x:Key="Xls" Source="../images/xls.png"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Height" Value="22" />
+        </Style>
+    </UserControl.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <telerik:Label Content="Компания:" />
+                <telerik:RadComboBox Height="22" Margin="5,0,5,0" 
+                                     VerticalAlignment="Top" 
+                                     DisplayMemberPath="name"
+                                     IsSynchronizedWithCurrentItem="True"
+                                     ItemsSource="{Binding CompaniesBox}"
+                                     SelectedValue="{Binding SelectedCompany}"
+                                     SelectedValuePath="name"
+                                     Command="{Binding StatCompany}"
+                                    />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <telerik:Label Content="Сотрудники" />
+                <telerik:RadListBox ItemsSource="{Binding Managers, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedValue="{Binding SelectedManager, Mode=TwoWay}"
+                                    SelectedValuePath="ManagerLogin"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    DisplayMemberPath="ManagerName"
+                                    Command="{Binding Try2}" Margin="5,2"/>
+
+                <telerik:RadDateTimePicker DateSelectionMode="Month" InputMode="DatePicker" 
+                                           DateTimeWatermarkContent="Выберите месяц" Margin="5"
+                                         SelectedValue="{Binding Date_Value}"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <telerik:RadButton VerticalContentAlignment="Top" Margin="5,2"
+                        HorizontalAlignment="Left" Height="22" Width="70"
+                                       Content="Доп. стат" Command="{Binding GetDopStat}"/>
+                    <telerik:RadButton Width="30" Height="30" HorizontalAlignment="Right"
+                                   Command="{Binding GetXLS}" ToolTip="Выгрузить в Excel">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Grid x:Name="controlLayout">
+                                    <Ellipse x:Name="buttonSurface" Fill="Green">
+                                    </Ellipse>
+                                    <Label x:Name="buttonCaption" Content="{Binding Source={StaticResource Xls}}"></Label>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="buttonSurface" Property="Fill" Value="DarkGreen"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </telerik:RadButton>
+                </StackPanel>
+               
+                <StackPanel Margin="5">
+                    <telerik:RadButton Content="Заплан, Приостанов, Треб. уточн" 
+                                       ToolTip="Запланировано, Приостановлено, Требует Уточнения"
+                                       Margin="0,5" Command="{Binding Get_ZPT}"/>
+                    <telerik:RadButton Content="Передано Тест, Разр" 
+                                       ToolTip="Передано Тестировщикам, Передано Разработчикам"
+                                       Command="{Binding Get_PTR}"/>
+                </StackPanel>
+                </StackPanel>
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                <telerik:RadButton Command="{Binding StatManagers}" Height="22" 
+                               Content="Общее по сотрудникам" Margin="5,0,0,5"/>
+                <telerik:RadButton Grid.Row="1" Height="22" Margin="5,0,0,10" 
+                               Content="Общее по компаниям" VerticalAlignment="Bottom"
+                               Command="{Binding MonthStat}"/>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Grid.Column="1" >
+            <Grid >
+                <telerik:RadGridView Grid.Column="0" ItemsSource="{Binding DTS}" GroupRenderMode="Flat" Margin="0,10"
+                                     IsReadOnly="True" ShowGroupPanel="False" 
+                                     AutoGenerateColumns="true" 
+                                     VerticalAlignment="Stretch" IsSynchronizedWithCurrentItem="True" GridLinesVisibility="Vertical" SelectionMode="Extended">
+
+                </telerik:RadGridView>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
