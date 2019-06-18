@@ -1,0 +1,212 @@
+﻿<Window x:Class="BasaDann.MainWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                Title="VsDeskMini" Height="500" Width="900"
+                xmlns:local="clr-namespace:BasaDann.Classes"
+                xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls" 
+                WindowStartupLocation="CenterScreen" 
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mdc="clr-namespace:BasaDann.Utils"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:fa="http://schemas.fontawesome.io/icons/"
+                mc:Ignorable="d" ResizeMode="CanResizeWithGrip"
+                >
+
+
+    <Window.Resources>
+        <local:MenuItems x:Key="ttt"/>
+        <Image x:Key="img_browser" Source="images/browser.png"></Image>
+
+    </Window.Resources>
+
+
+    <TabControl SelectedIndex="{Binding TabIndex}">
+        <TabItem Header="Заявка">
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" MaxWidth="150"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <StackPanel Orientation="Vertical">
+                        <telerik:Label Content="ID" />
+                        <telerik:Label Content="Категория" />
+                        <telerik:Label Content="Создано"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="1" >
+                        <TextBox Text="{Binding IDM, UpdateSourceTrigger=PropertyChanged}" Height="22" MaxLength="6">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding btnClick}" Key="Enter" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <TextBox x:Name="categorybox" Text="{Binding ZayavCategory_id}" TextWrapping="Wrap" Height="22" DataContext="{Binding Tickets}"/>
+                        <TextBox Text="{Binding Date}" TextWrapping="Wrap" Height="22" DataContext="{Binding Tickets}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="2">
+                        <telerik:Label Content="Название"/>
+                        <telerik:Label Content="Приоритет"/>
+                        <telerik:Label Content="Компания"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="3" DataContext="{Binding Tickets}">
+                        <TextBox Height="22" MinWidth="50" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap"/>
+                        <TextBox Text="{Binding Priority}" Height="22"/>
+                        <TextBox Text="{Binding FullName}" TextWrapping="Wrap" Height="22"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="4">
+                        <Label Visibility="Hidden" Height="22"/>
+                        <telerik:Label Content="Статус" />
+                        <telerik:Label Content="Исполнитель"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="5" DataContext="{Binding Tickets}">
+                        <Label Visibility="Hidden" Height="22"/>
+                        <TextBlock Text="{Binding Status}" Height="22"/>
+                        <TextBox Text="{Binding MfullName}" TextWrapping="Wrap" Height="22"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" MinHeight="300 "/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+
+
+                    <WebBrowser  
+                            x:Name="webBrowser"
+                            mdc:WebBrowserHelper.Body="{Binding Src_Brow}"/>
+                    <Grid  Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+
+                            <telerik:RadButton Content="Back" Width="100" />
+                            <telerik:RadButton Content="Найти" Width="100" Command="{Binding DefaultNotification, Mode=OneTime}"/>
+                            <telerik:RadButton Content="Создать заявку" Width="100"  Command="{Binding NewTicket, Mode=OneTime}"/>
+                            <telerik:RadButton Width="40" Content="LogIn" Command="{Binding set_login}" IsEnabled="False"/>
+                            <telerik:RadButton Content="{Binding Source={StaticResource img_browser}}"  Width="50" Height="40"
+                                   Command="{Binding Opsiti}" ToolTip="Открыть в браузере"/>
+
+                            <telerik:RadButton x:Name="tryBut" Command="{Binding Statistic}" Width="100">Stats</telerik:RadButton>
+                        </StackPanel>
+
+                        <Menu            Grid.Column="1" HorizontalAlignment="Left"
+                     Height="Auto"  x:Name="ImMenu"
+                     ItemsSource="{Binding MenuItems, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="2">
+
+
+                            <Menu.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"></VirtualizingStackPanel>
+                                </ItemsPanelTemplate>
+                            </Menu.ItemsPanel>
+                            <Menu.ItemContainerStyle>
+                                <Style TargetType="{x:Type MenuItem}">
+                                    <Setter Property="Command" Value="{Binding Command}" />
+                                </Style>
+                            </Menu.ItemContainerStyle>
+                            <Menu.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type local:TryMenu}" ItemsSource="{Binding Path=MenuItems, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <TextBlock Text="{Binding Header, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </HierarchicalDataTemplate>
+                            </Menu.ItemTemplate>
+
+
+
+                        </Menu>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Все заявки">
+            <telerik:RadBusyIndicator IsBusy="{Binding BusyI}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+
+                    <Grid >
+                        <telerik:RadGridView x:Name="rgv1" ItemsSource="{Binding DT_ALL}" GroupRenderMode="Flat" 
+                                 AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" VerticalAlignment="Stretch"
+                                 SelectedItem="{Binding SSR,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }" IsSynchronizedWithCurrentItem="True"
+                                 mdc:RadGridViewAttachedProperties.RowDoubleClickCommand="{Binding Selected_From_All}"
+                                 >
+                            <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn Header="ID" DataMemberBinding="{Binding ID}" TextWrapping="Wrap"/>
+                                <telerik:GridViewDataColumn Header="Статус" DataMemberBinding="{Binding Status}" TextWrapping="Wrap"/>
+                                <telerik:GridViewDataColumn Header="Создано" DataMemberBinding="{Binding Date}" TextWrapping="Wrap"/>
+                                <telerik:GridViewDataColumn Header="Название" MaxWidth="100" DataMemberBinding="{Binding Name}" TextWrapping="Wrap"/>
+                                <telerik:GridViewDataColumn Header="Компания" DataMemberBinding="{Binding FullName}" TextWrapping="Wrap"/>
+                                <telerik:GridViewDataColumn Header="Исполнитель" DataMemberBinding="{Binding MfullName}" TextWrapping="Wrap"/>
+                            </telerik:RadGridView.Columns>
+
+                        </telerik:RadGridView>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <telerik:RadDataPager PageSize="20"
+                                  FontSize="12" VerticalAlignment="Top"
+                                  Source="{Binding Items, ElementName=rgv1}"
+                                  IsTotalItemCountFixed="True"
+                                  DisplayMode="FirstLastPreviousNextNumeric, Text" />
+                    </Grid>
+
+                    <Grid Grid.Column="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+
+                            <telerik:Label Content="От Даты"/>
+                            <telerik:RadDatePicker IsEnabled="False" x:Name="DateP" SelectedValue="{Binding timestamp}" Culture="ru" Margin="0,0,0,10"/>
+
+                            <Button Height="30" Content="Все заявки" Command="{Binding AllTickets}" />
+
+                        </StackPanel>
+                    </Grid>
+
+
+                </Grid>
+
+            </telerik:RadBusyIndicator>
+        </TabItem>
+
+
+    </TabControl>
+
+</Window>

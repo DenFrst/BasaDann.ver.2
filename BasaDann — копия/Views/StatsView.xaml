@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="BasaDann.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600"
+             >
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Height" Value="22" />
+        </Style>
+        <Style TargetType="telerik:RadButton">
+            <Setter Property="Margin" Value="5,2" />
+            <Setter Property="Height" Value="22"  />
+            <Setter Property="Command" Value="{Binding Try2}"/>
+        </Style>
+    </UserControl.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <telerik:Label Content="Поиск:" />
+                <TextBox Height="22" Margin="5,0,5,0" VerticalAlignment="Top" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <telerik:Label Content="Recommended" />
+                <telerik:RadButton Content="Станислав Тихомиров" 
+                                   CommandParameter="s.tikhomirov"/>
+                <telerik:RadButton Content="Олег Насыхов" 
+                                   CommandParameter="o.nasyhov"/>
+                <telerik:RadButton Content="Николай Яковлев"
+                                   CommandParameter="n.yakovlev"/>
+                <telerik:RadButton Content="Екатерина Головченко"
+                                   CommandParameter="e.golovchenko"/>
+                <telerik:RadButton Content="Григорий Логвинов"
+                                   CommandParameter="Pitsburg"/>
+                <telerik:RadButton Content="Антон Дзянковский"
+                                   CommandParameter="dav"/>
+                <telerik:RadButton Content="Энвер Камалов"
+                                   CommandParameter="e.kamalov"/>
+                <telerik:RadButton Content="Илья Бахвалов"
+                                   CommandParameter="i.bahvalov"/>
+                <telerik:RadButton Content="Артур Лебедев"
+                                   CommandParameter="beholder"/>
+                <telerik:RadButton Content="Владислав Лесник"
+                                   CommandParameter="vlad.lesnik"/>
+            </StackPanel>
+
+            <telerik:RadButton Grid.Row="1" Height="22" Margin="5,10" Content="Общее" VerticalAlignment="Bottom"/>
+
+        </Grid>
+        <ScrollViewer Grid.Column="1" >
+            <Grid >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <telerik:Label Content="Всего заявок"/>
+                    <telerik:Label Content="Завершено заявок"/>
+                    <telerik:Label Content="Остальные заявки"/>
+                    <telerik:Label Content="Среднее время (ч.)"/>
+                    <telerik:Label Content="Последняя заявка"/>
+                    <telerik:Label Content="..."/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" DataContext="{Binding StatsCollection}">
+                    <TextBlock Text="{Binding z_All}"/>
+                    <TextBlock Text="{Binding z_Closed}" />
+                    <TextBlock Text="{Binding z_Open_Raz}"/>
+                    <TextBlock Text="{Binding z_Time_Sp}"/>
+                    <TextBlock Text="{Binding z_Last}"/>
+                    <TextBlock Text="..."/>
+                </StackPanel>
+
+
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

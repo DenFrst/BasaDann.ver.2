@@ -1,0 +1,118 @@
+﻿<Window x:Class="BasaDann.MainWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                Title="VsDeskMini" Height="500" Width="600"
+                xmlns:local="clr-namespace:BasaDann.Classes"
+                xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls" WindowStartupLocation="CenterScreen" 
+                
+                >
+
+
+    <Window.Resources>
+        <local:TicketViewModel x:Key="ttt"/>
+    </Window.Resources>
+
+    <Grid Grid.IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="515*"/>
+            <ColumnDefinition Width="77*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+
+        <Grid   MaxHeight="25" Margin="5,5,5,0" Grid.ColumnSpan="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <telerik:Label Grid.Column="0" Content="ID" />
+            <TextBox Grid.Column="1" Text="{Binding IDM, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding btnClick}" Key="Enter" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <telerik:Label Grid.Column="2" Content="Название" />
+            <TextBox Grid.Column="3" MinWidth="50" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" DataContext="{Binding Tickets}"/>
+            <Label Grid.Column="4" Visibility="Hidden"/>
+            <telerik:RadButton Grid.Column="5" Content="History"  Command="{Binding HistoryBut}" />
+        </Grid>
+
+        <Grid MaxHeight="25" Grid.Row="1"  Margin="5,0,5,0" DataContext="{Binding Tickets}" Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <telerik:Label Grid.Column="0" Content="Категория" Padding="5,2"/>
+            <TextBox Grid.Column="1" x:Name="categorybox" Text="{Binding ZayavCategory_id}" TextWrapping="Wrap"/>
+            <telerik:Label Grid.Column="2" Content="Приоритет" Padding="5,2"/>
+            <TextBox Grid.Column="3" Text="{Binding Priority}"/>
+            <telerik:Label Grid.Column="4" Content="Статус" Padding="5,2"/>
+            <telerik:RadComboBox Grid.Column="5" Text="{Binding Status}" ItemsSource="{Binding Source={StaticResource ttt}, Path=Get_Status}"/>
+        </Grid>
+
+        <Grid MaxHeight="25"  Grid.Row="2" Margin="5,0,5,0" DataContext="{Binding Tickets}" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name1"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <telerik:Label Grid.Column="0" Content="Создано" Padding="5,2"/>
+            <TextBox Grid.Column="1" Text="{Binding Date}" TextWrapping="Wrap"/>
+            <telerik:Label Grid.Column="2" Content="Компания" Padding="5,2"/>
+            <TextBox Grid.Column="3" Text="{Binding FullName}" TextWrapping="Wrap"/>
+            <telerik:Label Grid.Column="4" Content="Исполнитель" Padding="5,2"/>
+            <TextBox Grid.Column="5" Text="{Binding MfullName}" TextWrapping="Wrap"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="5,0,5,0" Grid.ColumnSpan="2" >
+            <TextBox MaxHeight="350" x:Name="contentbox" VerticalAlignment="Stretch" AcceptsReturn="True"
+                      TextWrapping="Wrap" Text="{Binding Content}" ScrollViewer.CanContentScroll="True" />
+
+
+        </Grid>
+
+        <Grid Grid.Row="5" Margin="5,5,5,5" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <telerik:RadButton Grid.Column="0" Content="Back" />
+            <telerik:RadButton Grid.Column="1" Content="Найти"  Command="{Binding btnClick, Mode=OneTime}"/>
+            <telerik:RadButton Grid.Column="2" Content="Создать заявку"  Command="{Binding btnClick, Mode=OneTime}"/>
+
+            <telerik:RadButton Grid.Column="4" Content="{Binding}" Height="30" Width="50" 
+                                HorizontalAlignment="Right" Command="{Binding GoBrowser}" ToolTip="Открыть в браузере"/>
+        </Grid>
+
+
+    </Grid>
+</Window>
