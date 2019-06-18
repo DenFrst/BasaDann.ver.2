@@ -54,7 +54,6 @@ namespace BasaDann.Classes
             nmw.Title = Header;
             nwb.Source = PathUrl;
             nmw.Content = nwb;
-            MessageBox.Show("wow"); //это месс
             // nmw.NavigationService("https://helpdesk.soft.aero/uploads/" + Url);
 
 
